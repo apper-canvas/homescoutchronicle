@@ -6,16 +6,18 @@ import HomePage from "@/components/pages/HomePage";
 import SearchPage from "@/components/pages/SearchPage";
 import FavoritesPage from "@/components/pages/FavoritesPage";
 import MyToursPage from "@/components/pages/MyToursPage";
+import PropertyDetailsPage from "@/components/pages/PropertyDetailsPage";
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Routes>
+<Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="search" element={<SearchPage />} />
-<Route path="favorites" element={<FavoritesPage />} />
+            <Route path="favorites" element={<FavoritesPage />} />
             <Route path="my-tours" element={<MyToursPage />} />
+            <Route path="property/:id" element={<PropertyDetailsPage />} />
           </Route>
         </Routes>
         
