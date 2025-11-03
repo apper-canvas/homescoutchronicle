@@ -3,14 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import HeroSection from "@/components/organisms/HeroSection";
 import PropertyGrid from "@/components/organisms/PropertyGrid";
-import PropertyDetailModal from "@/components/organisms/PropertyDetailModal";
 import { useProperties } from "@/hooks/useProperties";
-
 const HomePage = () => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
+const [searchQuery, setSearchQuery] = useState("");
   const [listingType, setListingType] = useState("Buy");
-  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   
   // Load featured properties based on listing type
   const { 
@@ -48,14 +45,10 @@ const HomePage = () => {
     } catch (error) {
       toast.error("Failed to update favorites");
     }
-  };
+};
 
   const handleViewDetails = (propertyId) => {
-    setSelectedPropertyId(propertyId);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedPropertyId(null);
+    navigate(`/property/${propertyId}`);
   };
 
   return (
@@ -80,16 +73,7 @@ const HomePage = () => {
           onViewDetails={handleViewDetails}
           title={`Featured Properties - For ${listingType}`}
         />
-      </section>
-
-      {/* Property Detail Modal */}
-      <PropertyDetailModal
-        propertyId={selectedPropertyId}
-        isOpen={!!selectedPropertyId}
-        onClose={handleCloseModal}
-        onToggleFavorite={handleToggleFavorite}
-        getPropertyById={getPropertyById}
-      />
+</section>
     </div>
   );
 };
