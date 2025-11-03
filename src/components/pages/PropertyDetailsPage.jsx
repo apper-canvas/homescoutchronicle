@@ -46,14 +46,15 @@ const PropertyDetailsPage = () => {
     setCurrentImageIndex(prev => 
       prev === property.images.length - 1 ? 0 : prev + 1
     );
-  };
+};
 
-useEffect(() => {
+  useEffect(() => {
     if (id) {
       loadProperty();
     }
   }, [id]);
-const loadProperty = async () => {
+
+  const loadProperty = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -644,6 +645,8 @@ return (
           </div>
         </div>
       </motion.div>
-    </div>
+</div>
   );
+};
+
 export default PropertyDetailsPage;
