@@ -52,8 +52,8 @@ const PropertyGrid = ({
     <div>
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
-        <p className="text-gray-600">
-          {properties.length} propert{properties.length !== 1 ? 'ies' : 'y'} found
+<p className="text-gray-600 font-medium">
+          {properties.length === 0 ? 'No properties' : `${properties.length.toLocaleString()} propert${properties.length !== 1 ? 'ies' : 'y'}`} found
         </p>
       </div>
 

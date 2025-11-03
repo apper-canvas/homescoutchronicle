@@ -16,9 +16,13 @@ const FilterSidebar = ({
   onClose
 }) => {
   const [openSections, setOpenSections] = useState({
-    price: true,
+price: true,
     bedsBaths: true,
-    propertyType: true
+    propertyType: true,
+    squareFootage: true,
+    lotSize: true,
+    yearBuilt: true,
+    features: true
   });
 
   const toggleSection = (section) => {
@@ -144,14 +148,14 @@ const FilterSidebar = ({
         </div>
       </FilterSection>
 
-      {/* Property Type */}
+{/* Property Type */}
       <FilterSection
         title="Property Type"
         isOpen={openSections.propertyType}
         onToggle={() => toggleSection("propertyType")}
       >
         <div className="space-y-3">
-          {propertyTypes.map((type) => (
+          {["Single Family", "Condo", "Townhouse", "Land"].map((type) => (
             <label key={type} className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -166,6 +170,186 @@ const FilterSidebar = ({
                 className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary/50"
               />
               <span className="text-sm text-gray-700">{type}</span>
+            </label>
+          ))}
+        </div>
+      </FilterSection>
+
+      {/* Square Footage */}
+      <FilterSection
+        title="Square Footage"
+        isOpen={openSections.squareFootage}
+        onToggle={() => toggleSection("squareFootage")}
+      >
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Min Square Feet
+            </label>
+            <Select
+              value={filters.minSquareFeet || ""}
+              onChange={(e) => handleFilterChange("minSquareFeet", e.target.value ? parseInt(e.target.value) : "")}
+            >
+              <option value="">No Min</option>
+              <option value="500">500+ sq ft</option>
+              <option value="750">750+ sq ft</option>
+              <option value="1000">1,000+ sq ft</option>
+              <option value="1250">1,250+ sq ft</option>
+              <option value="1500">1,500+ sq ft</option>
+              <option value="1750">1,750+ sq ft</option>
+              <option value="2000">2,000+ sq ft</option>
+              <option value="2500">2,500+ sq ft</option>
+              <option value="3000">3,000+ sq ft</option>
+              <option value="3500">3,500+ sq ft</option>
+              <option value="4000">4,000+ sq ft</option>
+            </Select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Max Square Feet
+            </label>
+            <Select
+              value={filters.maxSquareFeet || ""}
+              onChange={(e) => handleFilterChange("maxSquareFeet", e.target.value ? parseInt(e.target.value) : "")}
+            >
+              <option value="">No Max</option>
+              <option value="750">750 sq ft</option>
+              <option value="1000">1,000 sq ft</option>
+              <option value="1250">1,250 sq ft</option>
+              <option value="1500">1,500 sq ft</option>
+              <option value="1750">1,750 sq ft</option>
+              <option value="2000">2,000 sq ft</option>
+              <option value="2500">2,500 sq ft</option>
+              <option value="3000">3,000 sq ft</option>
+              <option value="3500">3,500 sq ft</option>
+              <option value="4000">4,000 sq ft</option>
+              <option value="5000">5,000+ sq ft</option>
+            </Select>
+          </div>
+        </div>
+      </FilterSection>
+
+      {/* Lot Size */}
+      <FilterSection
+        title="Lot Size"
+        isOpen={openSections.lotSize}
+        onToggle={() => toggleSection("lotSize")}
+      >
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Min Lot Size
+            </label>
+            <Select
+              value={filters.minLotSize || ""}
+              onChange={(e) => handleFilterChange("minLotSize", e.target.value ? parseFloat(e.target.value) : "")}
+            >
+              <option value="">No Min</option>
+              <option value="0.1">0.1+ acres</option>
+              <option value="0.25">0.25+ acres</option>
+              <option value="0.5">0.5+ acres</option>
+              <option value="1">1+ acre</option>
+              <option value="2">2+ acres</option>
+              <option value="5">5+ acres</option>
+              <option value="10">10+ acres</option>
+            </Select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Max Lot Size
+            </label>
+            <Select
+              value={filters.maxLotSize || ""}
+              onChange={(e) => handleFilterChange("maxLotSize", e.target.value ? parseFloat(e.target.value) : "")}
+            >
+              <option value="">No Max</option>
+              <option value="0.25">0.25 acres</option>
+              <option value="0.5">0.5 acres</option>
+              <option value="1">1 acre</option>
+              <option value="2">2 acres</option>
+              <option value="5">5 acres</option>
+              <option value="10">10 acres</option>
+              <option value="20">20+ acres</option>
+            </Select>
+          </div>
+        </div>
+      </FilterSection>
+
+      {/* Year Built */}
+      <FilterSection
+        title="Year Built"
+        isOpen={openSections.yearBuilt}
+        onToggle={() => toggleSection("yearBuilt")}
+      >
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Min Year Built
+            </label>
+            <Select
+              value={filters.minYearBuilt || ""}
+              onChange={(e) => handleFilterChange("minYearBuilt", e.target.value ? parseInt(e.target.value) : "")}
+            >
+              <option value="">No Min</option>
+              <option value="2020">2020+</option>
+              <option value="2010">2010+</option>
+              <option value="2000">2000+</option>
+              <option value="1990">1990+</option>
+              <option value="1980">1980+</option>
+              <option value="1970">1970+</option>
+              <option value="1960">1960+</option>
+              <option value="1950">1950+</option>
+            </Select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Max Year Built
+            </label>
+            <Select
+              value={filters.maxYearBuilt || ""}
+              onChange={(e) => handleFilterChange("maxYearBuilt", e.target.value ? parseInt(e.target.value) : "")}
+            >
+              <option value="">No Max</option>
+              <option value="1950">1950</option>
+              <option value="1960">1960</option>
+              <option value="1970">1970</option>
+              <option value="1980">1980</option>
+              <option value="1990">1990</option>
+              <option value="2000">2000</option>
+              <option value="2010">2010</option>
+              <option value="2020">2020</option>
+            </Select>
+          </div>
+        </div>
+      </FilterSection>
+
+      {/* Features */}
+      <FilterSection
+        title="Property Features"
+        isOpen={openSections.features}
+        onToggle={() => toggleSection("features")}
+      >
+        <div className="space-y-3">
+          {[
+            { key: "pool", label: "Pool" },
+            { key: "garage", label: "Garage" },
+            { key: "fireplace", label: "Fireplace" },
+            { key: "hardwoodFloors", label: "Hardwood Floors" }
+          ].map((feature) => (
+            <label key={feature.key} className="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={filters.features?.includes(feature.key) || false}
+                onChange={(e) => {
+                  const currentFeatures = filters.features || [];
+                  const newFeatures = e.target.checked
+                    ? [...currentFeatures, feature.key]
+                    : currentFeatures.filter(f => f !== feature.key);
+                  handleFilterChange("features", newFeatures);
+                }}
+                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary/50"
+              />
+              <span className="text-sm text-gray-700">{feature.label}</span>
             </label>
           ))}
         </div>

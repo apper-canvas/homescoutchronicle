@@ -54,7 +54,7 @@ export const useProperties = (filters = {}) => {
   };
 
   useEffect(() => {
-    loadProperties();
+loadProperties();
   }, [JSON.stringify(filters)]);
 
   return {

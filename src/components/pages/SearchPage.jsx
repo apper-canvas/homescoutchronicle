@@ -17,17 +17,25 @@ const SearchPage = () => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   
   // Initialize filters from URL params
-  const [filters, setFilters] = useState({
+const [filters, setFilters] = useState({
     location: searchParams.get("location") || "",
     listingType: searchParams.get("type") || "Buy",
     minPrice: searchParams.get("minPrice") ? parseInt(searchParams.get("minPrice")) : "",
     maxPrice: searchParams.get("maxPrice") ? parseInt(searchParams.get("maxPrice")) : "",
     minBeds: searchParams.get("minBeds") ? parseInt(searchParams.get("minBeds")) : "",
     minBaths: searchParams.get("minBaths") ? parseFloat(searchParams.get("minBaths")) : "",
-    propertyTypes: searchParams.get("propertyTypes") ? searchParams.get("propertyTypes").split(",") : []
+    propertyTypes: searchParams.get("propertyTypes") ? searchParams.get("propertyTypes").split(",") : [],
+    minSquareFeet: searchParams.get("minSquareFeet") ? parseInt(searchParams.get("minSquareFeet")) : "",
+    maxSquareFeet: searchParams.get("maxSquareFeet") ? parseInt(searchParams.get("maxSquareFeet")) : "",
+    minLotSize: searchParams.get("minLotSize") ? parseFloat(searchParams.get("minLotSize")) : "",
+    maxLotSize: searchParams.get("maxLotSize") ? parseFloat(searchParams.get("maxLotSize")) : "",
+    minYearBuilt: searchParams.get("minYearBuilt") ? parseInt(searchParams.get("minYearBuilt")) : "",
+    maxYearBuilt: searchParams.get("maxYearBuilt") ? parseInt(searchParams.get("maxYearBuilt")) : "",
+    features: searchParams.get("features") ? searchParams.get("features").split(",") : []
   });
 
-  const [sortBy, setSortBy] = useState("newest");
+const [sortBy, setSortBy] = useState("newest");
+  const [viewMode, setViewMode] = useState("grid");
 
   const { 
     properties, 
@@ -62,12 +70,19 @@ const SearchPage = () => {
   const handleResetFilters = () => {
     setFilters({
       location: "",
-      listingType: "Buy",
+listingType: "Buy",
       minPrice: "",
       maxPrice: "",
       minBeds: "",
       minBaths: "",
-      propertyTypes: []
+      propertyTypes: [],
+      minSquareFeet: "",
+      maxSquareFeet: "",
+      minLotSize: "",
+      maxLotSize: "",
+      minYearBuilt: "",
+      maxYearBuilt: "",
+      features: []
     });
   };
 
@@ -167,6 +182,38 @@ const SearchPage = () => {
 
           {/* Main Content */}
           <div className="flex-1 min-w-0">
+{/* Mobile Filter Button, View Toggle & Sort */}
+            <div className="flex items-center justify-between gap-4 mb-6">
+              {/* View Mode Toggle */}
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    viewMode === "grid"
+                      ? "bg-white shadow-sm text-primary"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  <ApperIcon name="Grid3X3" size={16} className="mr-2" />
+                  Grid
+                </button>
+                <button
+                  onClick={() => {
+                    setViewMode("map");
+                    toast.info("Map view functionality will be available soon");
+                  }}
+                  className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    viewMode === "map"
+                      ? "bg-white shadow-sm text-primary"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  <ApperIcon name="Map" size={16} className="mr-2" />
+                  Map
+                </button>
+              </div>
+            </div>
+
             {/* Mobile Filter Button & Sort */}
             <div className="flex items-center justify-between mb-6 lg:justify-end">
               <Button
@@ -194,17 +241,33 @@ const SearchPage = () => {
               </div>
             </div>
 
-            {/* Property Grid */}
-            <PropertyGrid
-              properties={sortedProperties}
-              loading={loading}
-              error={error}
-              onRetry={loadProperties}
-              onToggleFavorite={handleToggleFavorite}
-              onViewDetails={handleViewDetails}
-              onResetFilters={handleResetFilters}
-              title="Search Results"
-            />
+{/* Property Results */}
+            {viewMode === "grid" ? (
+              <PropertyGrid
+                properties={sortedProperties}
+                loading={loading}
+                error={error}
+                onRetry={loadProperties}
+                onToggleFavorite={handleToggleFavorite}
+                onViewDetails={handleViewDetails}
+                onResetFilters={handleResetFilters}
+                title="Search Results"
+              />
+            ) : (
+              <div className="bg-white rounded-lg shadow-card p-8 text-center">
+                <ApperIcon name="Map" size={48} className="mx-auto text-gray-400 mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Map View</h3>
+                <p className="text-gray-600 mb-4">
+                  Interactive map with property pins and clustering will be available soon.
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={() => setViewMode("grid")}
+                >
+                  View as Grid
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
