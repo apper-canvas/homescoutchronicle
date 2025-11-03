@@ -6,7 +6,6 @@ import Button from "@/components/atoms/Button";
 import Select from "@/components/atoms/Select";
 import PropertyGrid from "@/components/organisms/PropertyGrid";
 import FilterSidebar from "@/components/organisms/FilterSidebar";
-import PropertyDetailModal from "@/components/organisms/PropertyDetailModal";
 import SearchBar from "@/components/molecules/SearchBar";
 import ListingTypeTabs from "@/components/molecules/ListingTypeTabs";
 import { useProperties } from "@/hooks/useProperties";
@@ -282,16 +281,7 @@ listingType: "Buy",
           isOpen={showMobileFilters}
           onClose={() => setShowMobileFilters(false)}
         />
-      )}
-
-      {/* Property Detail Modal */}
-      <PropertyDetailModal
-        propertyId={selectedPropertyId}
-        isOpen={!!selectedPropertyId}
-        onClose={handleCloseModal}
-        onToggleFavorite={handleToggleFavorite}
-        getPropertyById={getPropertyById}
-      />
+)}
     </div>
   );
 };
