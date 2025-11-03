@@ -1,10 +1,27 @@
-import propertiesData from "@/services/mockData/properties.json";
+import properties from "@/services/mockData/properties.json";
+import notesService from "./notesService.js";
 
-// Simulate API delay
+const FAVORITES_KEY = 'favoriteProperties';
+
+// Get favorites from localStorage
+const getFavoritesFromStorage = () => {
+  const favorites = localStorage.getItem(FAVORITES_KEY);
+  return favorites ? JSON.parse(favorites) : [];
+};
+
+// Save favorites to localStorage
+const saveFavoritesToStorage = (favorites) => {
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+};
+
+// Utility function to simulate API delay
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// In-memory storage for favorites (in real app this would be backend/localStorage)
-let favoriteProperties = new Set([2, 5, 8]); // Some initial favorites
+// Store favorites in memory for session
+const favoriteProperties = new Set(getFavoritesFromStorage());
+
+// Properties data reference
+const propertiesData = properties;
 
 class PropertyService {
   async getAll() {
@@ -17,7 +34,7 @@ class PropertyService {
     }));
   }
 
-async getById(id) {
+  async getById(id) {
     await delay(200);
     
     const property = propertiesData.find(p => p.Id === parseInt(id));
@@ -47,17 +64,11 @@ async getById(id) {
         '/api/placeholder/800/603',
         '/api/placeholder/800/604'
       ],
-      schools: [
-        { name: "Washington Elementary", rating: 8, distance: "0.3 miles", type: "Elementary" },
-        { name: "Lincoln Middle School", rating: 9, distance: "0.7 miles", type: "Middle School" },
-        { name: "Roosevelt High School", rating: 7, distance: "1.2 miles", type: "High School" }
-      ],
       neighborhood: {
-        walkScore: 87,
+        walkScore: 85,
         transitScore: 72,
-        bikeScore: 65,
+        bikeScore: 78,
         amenities: [
-          { name: "Starbucks", distance: "2 min walk", icon: "Coffee" },
           { name: "Whole Foods", distance: "5 min walk", icon: "ShoppingCart" },
           { name: "LA Fitness", distance: "8 min walk", icon: "Dumbbell" },
           { name: "Central Park", distance: "3 min walk", icon: "Trees" }
@@ -85,7 +96,8 @@ async getById(id) {
       .filter(property => favoriteProperties.has(property.Id))
       .map(property => ({
         ...property,
-        isFavorite: true
+        isFavorite: true,
+        note: notesService.getPropertyNote(property.Id)
       }));
     
     return favorites;
@@ -97,11 +109,20 @@ async getById(id) {
     const propertyId = parseInt(id);
     if (favoriteProperties.has(propertyId)) {
       favoriteProperties.delete(propertyId);
+      saveFavoritesToStorage(Array.from(favoriteProperties));
       return false; // Not favorited anymore
     } else {
       favoriteProperties.add(propertyId);
+      saveFavoritesToStorage(Array.from(favoriteProperties));
       return true; // Now favorited
     }
+  }
+
+  async savePropertyNote(propertyId, note) {
+    await notesService.savePropertyNote(propertyId, note);
+    // Simulate API delay
+    await delay(200);
+    return { success: true };
   }
 
   async searchProperties(filters = {}) {
@@ -150,7 +171,7 @@ async getById(id) {
       );
     }
 
-// Additional filtering for advanced features
+    // Additional filtering for advanced features
     if (filters.minSquareFeet) {
       results = results.filter(property => 
         property.squareFeet && property.squareFeet >= filters.minSquareFeet

@@ -99,6 +99,22 @@ export const useFavoriteProperties = () => {
     }
   };
 
+  const updatePropertyNote = async (propertyId, note) => {
+    try {
+      await propertyService.savePropertyNote(propertyId, note);
+      setFavorites(prevFavorites =>
+        prevFavorites.map(property =>
+          property.Id === propertyId
+            ? { ...property, note: note }
+            : property
+        )
+      );
+    } catch (err) {
+      console.error("Error updating property note:", err);
+      throw err;
+    }
+  };
+
   useEffect(() => {
     loadFavorites();
   }, []);
@@ -108,6 +124,7 @@ export const useFavoriteProperties = () => {
     loading,
     error,
     loadFavorites,
-    removeFavorite
+    removeFavorite,
+    updatePropertyNote
   };
 };
