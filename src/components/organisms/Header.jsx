@@ -9,9 +9,9 @@ const Header = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navItems = [
+const navItems = [
     { path: "/", label: "Home", icon: "Home" },
-    { path: "/search", label: "Search", icon: "Search" },
+    { path: "/search", label: "Properties", icon: "Search" },
     { path: "/favorites", label: "Saved", icon: "Heart" }
   ];
 

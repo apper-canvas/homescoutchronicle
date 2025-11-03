@@ -44,7 +44,7 @@ export const useProperties = (filters = {}) => {
     }
   };
 
-  const getPropertyById = async (propertyId) => {
+const getPropertyById = async (propertyId) => {
     try {
       return await propertyService.getById(propertyId);
     } catch (err) {

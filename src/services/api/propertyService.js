@@ -17,7 +17,7 @@ class PropertyService {
     }));
   }
 
-  async getById(id) {
+async getById(id) {
     await delay(200);
     
     const property = propertiesData.find(p => p.Id === parseInt(id));
@@ -25,10 +25,57 @@ class PropertyService {
       throw new Error("Property not found");
     }
     
-    return {
+    // Add mock data for additional fields not in the JSON
+    const enhancedProperty = {
       ...property,
-      isFavorite: favoriteProperties.has(property.Id)
+      isFavorite: favoriteProperties.has(property.Id),
+      features: property.features || [
+        "Central Air Conditioning",
+        "Hardwood Floors",
+        "Updated Kitchen", 
+        "Spacious Master Suite",
+        "Private Backyard",
+        "Garage Parking",
+        "Walk-in Closets",
+        "Modern Appliances"
+      ],
+      hoaFees: property.hoaFees || (property.propertyType === 'Condo' ? 250 : null),
+      images: property.images || [
+        '/api/placeholder/800/600',
+        '/api/placeholder/800/601',
+        '/api/placeholder/800/602',
+        '/api/placeholder/800/603',
+        '/api/placeholder/800/604'
+      ],
+      schools: [
+        { name: "Washington Elementary", rating: 8, distance: "0.3 miles", type: "Elementary" },
+        { name: "Lincoln Middle School", rating: 9, distance: "0.7 miles", type: "Middle School" },
+        { name: "Roosevelt High School", rating: 7, distance: "1.2 miles", type: "High School" }
+      ],
+      neighborhood: {
+        walkScore: 87,
+        transitScore: 72,
+        bikeScore: 65,
+        amenities: [
+          { name: "Starbucks", distance: "2 min walk", icon: "Coffee" },
+          { name: "Whole Foods", distance: "5 min walk", icon: "ShoppingCart" },
+          { name: "LA Fitness", distance: "8 min walk", icon: "Dumbbell" },
+          { name: "Central Park", distance: "3 min walk", icon: "Trees" }
+        ]
+      },
+      agent: {
+        name: "Sarah Johnson",
+        company: "Premier Realty Group",
+        phone: "(555) 123-4567",
+        email: "sarah@premierrealty.com",
+        rating: 4.9,
+        reviews: 127,
+        experience: 8,
+        propertiesSold: 156
+      }
     };
+    
+    return enhancedProperty;
   }
 
   async getFavorites() {
