@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PropertyGrid from "@/components/organisms/PropertyGrid";
-import PropertyDetailModal from "@/components/organisms/PropertyDetailModal";
 import { useFavoriteProperties } from "@/hooks/useProperties";
-import propertyService from "@/services/api/propertyService";
-
 const FavoritesPage = () => {
-  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
+  const navigate = useNavigate();
   
   const { 
     favorites, 
@@ -24,22 +22,8 @@ const FavoritesPage = () => {
       toast.error("Failed to remove from favorites");
     }
   };
-
-  const handleViewDetails = (propertyId) => {
-    setSelectedPropertyId(propertyId);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedPropertyId(null);
-  };
-
-  const getPropertyById = async (propertyId) => {
-    try {
-      return await propertyService.getById(propertyId);
-    } catch (err) {
-      console.error("Error loading property:", err);
-      throw err;
-    }
+const handleViewDetails = (propertyId) => {
+    navigate(`/property/${propertyId}`);
   };
 
   return (
@@ -65,16 +49,7 @@ const FavoritesPage = () => {
           onViewDetails={handleViewDetails}
           title="Your Favorites"
         />
-      </div>
-
-      {/* Property Detail Modal */}
-      <PropertyDetailModal
-        propertyId={selectedPropertyId}
-        isOpen={!!selectedPropertyId}
-        onClose={handleCloseModal}
-        onToggleFavorite={handleToggleFavorite}
-        getPropertyById={getPropertyById}
-      />
+</div>
     </div>
   );
 };
