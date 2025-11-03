@@ -12,7 +12,8 @@ const Header = () => {
 const navItems = [
     { path: "/", label: "Home", icon: "Home" },
     { path: "/search", label: "Properties", icon: "Search" },
-    { path: "/favorites", label: "Saved", icon: "Heart" }
+    { path: "/favorites", label: "Saved", icon: "Heart" },
+    { path: "/my-tours", label: "My Tours", icon: "Calendar" }
   ];
 
   const isActive = (path) => {
@@ -63,7 +64,11 @@ const navItems = [
 
           {/* Contact Button - Desktop */}
           <div className="hidden md:block">
-            <Button variant="primary" size="medium">
+<Button 
+              variant="primary" 
+              size="medium"
+              onClick={() => navigate('/search')}
+            >
               <ApperIcon name="Phone" size={16} className="mr-2" />
               Contact Agent
             </Button>
@@ -106,7 +111,12 @@ const navItems = [
               ))}
               
               <div className="pt-3 mt-3 border-t border-gray-200">
-                <Button variant="primary" size="medium" className="w-full justify-center">
+<Button 
+                  variant="primary" 
+                  size="medium" 
+                  className="w-full justify-center"
+                  onClick={() => navigate('/search')}
+                >
                   <ApperIcon name="Phone" size={16} className="mr-2" />
                   Contact Agent
                 </Button>

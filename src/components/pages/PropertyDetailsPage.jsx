@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useProperties } from "@/hooks/useProperties";
+import ContactAgentModal from "@/components/molecules/ContactAgentModal";
+import TourSchedulingModal from "@/components/molecules/TourSchedulingModal";
 import ApperIcon from "@/components/ApperIcon";
 import Badge from "@/components/atoms/Badge";
 import Button from "@/components/atoms/Button";
@@ -12,10 +14,12 @@ const PropertyDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getPropertyById, toggleFavorite } = useProperties();
-  const [property, setProperty] = useState(null);
+const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showContactModal, setShowContactModal] = useState(false);
+  const [showTourModal, setShowTourModal] = useState(false);
 
   // Utility functions
   const formatPrice = (price) => {
@@ -79,12 +83,12 @@ const PropertyDetailsPage = () => {
     }
   };
 
-  const handleScheduleTour = () => {
-    toast.success("Tour request sent! An agent will contact you soon.");
+const handleScheduleTour = () => {
+    setShowTourModal(true);
   };
 
   const handleContactAgent = () => {
-    toast.success("Agent contact information saved to your messages.");
+    setShowContactModal(true);
   };
 
   const handleSaveProperty = () => {
@@ -644,7 +648,22 @@ return (
             </div>
           </div>
         </div>
-      </motion.div>
+</motion.div>
+
+{/* Contact Agent Modal */}
+      <ContactAgentModal
+        isOpen={showContactModal}
+        onClose={() => setShowContactModal(false)}
+        agent={property?.agent}
+        propertyId={id}
+      />
+
+      {/* Tour Scheduling Modal */}
+      <TourSchedulingModal
+        isOpen={showTourModal}
+        onClose={() => setShowTourModal(false)}
+        property={property}
+      />
 </div>
   );
 };

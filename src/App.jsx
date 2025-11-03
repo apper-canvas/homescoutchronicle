@@ -5,7 +5,7 @@ import Layout from "@/components/Layout";
 import HomePage from "@/components/pages/HomePage";
 import SearchPage from "@/components/pages/SearchPage";
 import FavoritesPage from "@/components/pages/FavoritesPage";
-
+import MyToursPage from "@/components/pages/MyToursPage";
 function App() {
   return (
     <BrowserRouter>
@@ -14,7 +14,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="search" element={<SearchPage />} />
-            <Route path="favorites" element={<FavoritesPage />} />
+<Route path="favorites" element={<FavoritesPage />} />
+            <Route path="my-tours" element={<MyToursPage />} />
           </Route>
         </Routes>
         
