@@ -103,105 +103,51 @@ class PropertyService {
       );
     }
 
-// Add favorite status
-    
-    // Apply filters
-    let filtered = [...properties];
-    
-    // Location filter
-    if (filters.location) {
-      const locationLower = filters.location.toLowerCase();
-      filtered = filtered.filter(property => 
-        property.address?.toLowerCase().includes(locationLower) ||
-        property.city?.toLowerCase().includes(locationLower) ||
-        property.state?.toLowerCase().includes(locationLower) ||
-        property.zipCode?.toString().includes(locationLower)
-      );
-    }
-    
-    // Listing type filter
-    if (filters.listingType) {
-      filtered = filtered.filter(property => 
-        property.listingType === filters.listingType
-      );
-    }
-    
-    // Price range filters
-    if (filters.minPrice) {
-      filtered = filtered.filter(property => 
-        property.price >= filters.minPrice
-      );
-    }
-    if (filters.maxPrice) {
-      filtered = filtered.filter(property => 
-        property.price <= filters.maxPrice
-      );
-    }
-    
-    // Beds and baths filters
-    if (filters.minBeds) {
-      filtered = filtered.filter(property => 
-        property.bedrooms >= filters.minBeds
-      );
-    }
-    if (filters.minBaths) {
-      filtered = filtered.filter(property => 
-        property.bathrooms >= filters.minBaths
-      );
-    }
-    
-    // Property types filter
-    if (filters.propertyTypes && filters.propertyTypes.length > 0) {
-      filtered = filtered.filter(property => 
-        filters.propertyTypes.includes(property.propertyType)
-      );
-    }
-    
-    // Square footage filters
+// Additional filtering for advanced features
     if (filters.minSquareFeet) {
-      filtered = filtered.filter(property => 
+      results = results.filter(property => 
         property.squareFeet && property.squareFeet >= filters.minSquareFeet
       );
     }
     if (filters.maxSquareFeet) {
-      filtered = filtered.filter(property => 
+      results = results.filter(property => 
         property.squareFeet && property.squareFeet <= filters.maxSquareFeet
       );
     }
     
     // Lot size filters
     if (filters.minLotSize) {
-      filtered = filtered.filter(property => 
+      results = results.filter(property => 
         property.lotSize && property.lotSize >= filters.minLotSize
       );
     }
     if (filters.maxLotSize) {
-      filtered = filtered.filter(property => 
+      results = results.filter(property => 
         property.lotSize && property.lotSize <= filters.maxLotSize
       );
     }
     
     // Year built filters
     if (filters.minYearBuilt) {
-      filtered = filtered.filter(property => 
+      results = results.filter(property => 
         property.yearBuilt && property.yearBuilt >= filters.minYearBuilt
       );
     }
     if (filters.maxYearBuilt) {
-      filtered = filtered.filter(property => 
+      results = results.filter(property => 
         property.yearBuilt && property.yearBuilt <= filters.maxYearBuilt
       );
     }
     
     // Features filter
     if (filters.features && filters.features.length > 0) {
-      filtered = filtered.filter(property => {
+      results = results.filter(property => {
         if (!property.features) return false;
         return filters.features.every(feature => property.features.includes(feature));
       });
     }
-    
-    return filtered;
+
+    // Add favorite status to results
     results = results.map(property => ({
       ...property,
       isFavorite: favoriteProperties.has(property.Id)
